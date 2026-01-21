@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-// İŞTE DÜZELTME BURADA: (Başında iki nokta var, dikkat et)
+// Sidebar yolunu koruduk (Doğrusu bu)
 import Sidebar from "../components/Sidebar"; 
 import Link from "next/link";
 import { supabase } from "../lib/supabase";
@@ -27,7 +27,8 @@ export default async function Home({ searchParams }) {
           
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
-              <h1 className="text-4xl font-black text-[#202020] tracking-tighter mb-2">KÜTÜPHANE</h1>
+              {/* BAŞLIK DÜZELTİLDİ: GERZEGEN OLDU */}
+              <h1 className="text-4xl font-black text-[#202020] tracking-tighter mb-2">GERZEGEN</h1>
               <p className="text-gray-400 font-medium text-sm">
                 Toplam <span className="text-[#00537d] font-bold">{books?.length || 0}</span> kitap listeleniyor.
               </p>
@@ -37,7 +38,8 @@ export default async function Home({ searchParams }) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 pb-20">
             {books?.map((book) => (
               <Link key={book.id} href={`/books/${book.slug}`} className="group block">
-                <div className="relative aspect-[2/3] mb-4 overflow-hidden rounded-sm bg-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-2">
+                {/* KAPAK FOTOĞRAFI ORANI DÜZELTİLDİ: aspect-square (1:1) YAPILDI */}
+                <div className="relative aspect-square mb-4 overflow-hidden rounded-sm bg-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-xl group-hover:-translate-y-2">
                   {book.cover ? (
                     <img 
                       src={book.cover} 
