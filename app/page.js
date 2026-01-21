@@ -1,21 +1,23 @@
-// --- BU SATIR HATAYI ÇÖZEN SİHİRLİ SATIR ---
-export const dynamic = 'force-dynamic'; 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-import Sidebar from "./components/Sidebar";
+// DİKKAT: Sidebar dosyası app/components içindeyse bu satır kalsın. 
+// Eğer hata verirse "../components/Sidebar" yaparsın.
+import Sidebar from "./components/Sidebar"; 
 import Link from "next/link";
-import { supabase } from "./lib/supabase";
+
+// DÜZELTME BURADA: (../lib/supabase yaptık)
+import { supabase } from "../lib/supabase";
 
 export default async function Home({ searchParams }) {
-  // Arama parametresini al (URL'den ?q=kitapadi diye gelen kısım)
-  // Next.js son versiyonlarda searchParams promise olabilir, await ekledik garanti olsun.
+  // URL parametrelerini güvenli şekilde al
   const params = await searchParams; 
   const search = params?.q || "";
 
   // Sorguyu hazırla
   let query = supabase.from('books').select('*').order('created_at', { ascending: false });
 
-  // Eğer arama yapıldıysa filtrele
+  // Arama filtresi
   if (search) {
     query = query.ilike('title', `%${search}%`);
   }
@@ -38,7 +40,6 @@ export default async function Home({ searchParams }) {
             </div>
           </header>
 
-          {/* KİTAP LİSTESİ */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 pb-20">
             {books?.map((book) => (
               <Link key={book.id} href={`/books/${book.slug}`} className="group block">
@@ -54,13 +55,10 @@ export default async function Home({ searchParams }) {
                       <span className="material-icons text-4xl">image</span>
                     </div>
                   )}
-                  
-                  {/* Hover Efekti */}
                   <div className="absolute inset-0 bg-[#00537d]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <span className="text-white font-bold tracking-widest text-xs border border-white/30 px-4 py-2 rounded-full">İNCELE</span>
                   </div>
                 </div>
-
                 <h3 className="font-bold text-[#202020] text-sm leading-tight mb-1 truncate group-hover:text-[#00537d] transition-colors">
                   {book.title}
                 </h3>
@@ -69,8 +67,6 @@ export default async function Home({ searchParams }) {
                 </p>
               </Link>
             ))}
-
-            {/* KİTAP YOKSA */}
             {books?.length === 0 && (
               <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-300">
                 <span className="material-icons text-6xl mb-4">search_off</span>
@@ -78,7 +74,6 @@ export default async function Home({ searchParams }) {
               </div>
             )}
           </div>
-
         </div>
       </main>
     </div>
