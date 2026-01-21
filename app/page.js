@@ -1,23 +1,17 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-// DİKKAT: Sidebar dosyası app/components içindeyse bu satır kalsın. 
-// Eğer hata verirse "../components/Sidebar" yaparsın.
-import Sidebar from "./components/Sidebar"; 
+// İŞTE DÜZELTME BURADA: (Başında iki nokta var, dikkat et)
+import Sidebar from "../components/Sidebar"; 
 import Link from "next/link";
-
-// DÜZELTME BURADA: (../lib/supabase yaptık)
 import { supabase } from "../lib/supabase";
 
 export default async function Home({ searchParams }) {
-  // URL parametrelerini güvenli şekilde al
   const params = await searchParams; 
   const search = params?.q || "";
 
-  // Sorguyu hazırla
   let query = supabase.from('books').select('*').order('created_at', { ascending: false });
 
-  // Arama filtresi
   if (search) {
     query = query.ilike('title', `%${search}%`);
   }
@@ -67,6 +61,7 @@ export default async function Home({ searchParams }) {
                 </p>
               </Link>
             ))}
+
             {books?.length === 0 && (
               <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-300">
                 <span className="material-icons text-6xl mb-4">search_off</span>
@@ -74,6 +69,7 @@ export default async function Home({ searchParams }) {
               </div>
             )}
           </div>
+
         </div>
       </main>
     </div>
