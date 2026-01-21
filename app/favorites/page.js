@@ -1,6 +1,12 @@
 "use client";
+
+// --- BU İKİ SATIR BUILD HATASINI ÇÖZER ---
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+// Dosya yolu: app/favorites/page.js olduğu için ../../lib doğru.
+import { supabase } from "../../lib/supabase"; 
 import Sidebar from "../../components/Sidebar";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,7 +36,11 @@ export default function FavoritesPage() {
 
     if (data) {
         // Gelen veri yapısını düzelt: [{book_id:1, books:{...}}] -> [{...}]
-        const cleanedData = data.map(item => item.books);
+        // Eğer kitap silinmişse null gelebilir, filtreleyelim
+        const cleanedData = data
+          .map(item => item.books)
+          .filter(book => book !== null);
+          
         setFavBooks(cleanedData);
     }
     setLoading(false);
@@ -57,7 +67,7 @@ export default function FavoritesPage() {
                       
                       <div className="aspect-square w-full relative overflow-hidden rounded-2xl bg-gray-100 mb-4 border border-gray-100 group-hover:shadow-2xl group-hover:shadow-[#00537d]/20 transition-all duration-300 group-hover:-translate-y-2">
                         
-                        {/* Favori butonu burada da olsun ki vazgeçerse çıkarabilsin */}
+                        {/* Favori butonu */}
                         <div className="absolute top-3 right-3 z-20">
                            <FavoriteButton bookId={book.id} />
                         </div>
